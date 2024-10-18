@@ -1,0 +1,9 @@
+FROM public.ecr.aws/lambda/python:3.12
+
+COPY requirements.txt .
+
+RUN pip install -r requirements.txt -t /var/task
+
+COPY lambda_function.py /var/task/
+
+CMD ["lambda_function.lambda_handler"]  

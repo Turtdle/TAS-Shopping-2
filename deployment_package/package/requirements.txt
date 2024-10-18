@@ -1,0 +1,5 @@
+Pillow
+requests
+boto3
+google-generativeai
+numpy
