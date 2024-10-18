@@ -5,6 +5,7 @@ from PIL import Image
 import base64
 from create_route_helper import *
 from user_list_to_categories import *
+from user_list_to_categories_backup import *
 import time
 def get_s3_object(bucket, key):
     s3 = boto3.client('s3')
@@ -33,7 +34,13 @@ def lambda_handler(event, context):
         dic = categorize(grocery_list, label_text)
         if dic:
             break
-        time.sleep(1)
+        time.sleep(0.25)
+    if not dic:
+        for i in range(2):
+            dic = categorize_backup(grocery_list, label_text)
+            if dic:
+                break
+            time.sleep(0.25)
     if not dic:
         return {
             'statusCode': 200,
