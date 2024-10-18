@@ -51,6 +51,9 @@ def lambda_handler(event, context):
             'body': json.dumps({
                 'image': None
             })}
+    for label in label_text:
+        if label not in dic:
+            dic[label] = []
     shopping_route = shopping_order(label_positions=label_positions(label_pixels), grocery_list=dic)
     barriers = process_barriers(barriers, bbox)
     route_image = draw_route(trimmed_image, shopping_route, label_positions(label_pixels), barriers=barriers, grocery_list=dic)
