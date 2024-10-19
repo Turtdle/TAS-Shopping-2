@@ -10,8 +10,8 @@ shopping_list = [
     "toiletpaper",
     "socks",
 ]
-address = "1698 US Highway 98, Daphne, AL 36526-4252"
-state = "alabama"
+address = "789 Mission St, San Francisco, CA 94103-3132"
+state = "california"
 #get_categories #state, address -> labels
 #categorize_items #categories, grocery list -> grocery_dic
 #create_route #state, address, grocery_dic -> image
@@ -19,7 +19,7 @@ state = "alabama"
 base_url = "https://oj35b6kjt7.execute-api.us-west-2.amazonaws.com/default/"
 
 
-key = ""
+key = "ZSW7wbMB6E9UHbBaCcqOg9CYJ5js4NgD1p6osB0G"
 headers = {
     "Content-Type": "application/json",
     "x-api-key": key

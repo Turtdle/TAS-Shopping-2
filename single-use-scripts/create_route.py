@@ -21,7 +21,7 @@ def main(state, address, grocery_list):
     image_with_markers, adjusted_labels = add_label_markers(trimmed_image, labels, background_size)
     flood_filled_image, label_pixels = flood_fill(Image.new("RGB", image_with_markers.size, "white"), adjusted_labels)
     label_text = [label[3] for label in labels]
-    
+    print(label_text)
     for i in range(4):
         dic = categorize(grocery_list, label_text)
         if dic:
@@ -29,13 +29,7 @@ def main(state, address, grocery_list):
         time.sleep(1)
     if not dic:
         Exception("No categories found")
-    dic =  {
-    "seasonal" : ["banana"],
-    "bedding" : ["banana"],
-    "beauty" : ["banana"],
-    "entrance" : ["banana"],
-    "checkout" : ["banana"]
-    }
+
     shopping_route = shopping_order(label_positions=label_positions(label_pixels), grocery_list=dic)
     barriers = process_barriers(barriers, bbox)
     route_image = draw_route(trimmed_image, shopping_route, label_positions(label_pixels), barriers=barriers, grocery_list=dic)

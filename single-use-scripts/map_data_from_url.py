@@ -8,7 +8,7 @@ import os
 import time
 from tqdm import tqdm
 
-def get_html_data(filename, link, max_retries=10, desired_width=800, desired_height=800):
+def get_map_data(filename, link, max_retries=10, desired_width=800, desired_height=800):
     chrome_options = Options()
     chrome_options.add_argument("--headless")
     chrome_options.add_argument("--start-maximized")
@@ -38,10 +38,38 @@ def get_html_data(filename, link, max_retries=10, desired_width=800, desired_hei
         WebDriverWait(driver, 10).until(
             EC.presence_of_element_located((By.CSS_SELECTOR, map_selector))
         )
+        time.sleep(5)
+        resize_script = f"""
+        var element = document.querySelector("{map_selector}");
+        element.style.width = "{desired_width}px";
+        element.style.height = "{desired_height}px";
+        """
+        driver.execute_script(resize_script)
 
-        html = driver.page_source
-        with open(filename, "w") as f:
-            f.write(html)
+        driver.implicitly_wait(2)
+
+        driver.save_screenshot(filename)
+
+        remove_labels_script = """
+        var elements = document.querySelectorAll("g[id='Adjacency-Icons']");
+        elements.forEach(function(element) {
+            element.remove();
+        });
+        """
+        driver.execute_script(remove_labels_script)
+
+        driver.save_screenshot(filename + "_no_labels.png")
+
+        remove_names_script = """
+        var elements = document.querySelectorAll("g[id='Adjacency-Names']");
+        elements.forEach(function(element) {
+            element.remove();
+        });
+        """
+        driver.execute_script(remove_names_script)
+
+        driver.save_screenshot(filename + "_no_names.png")
+
     except TimeoutException:
         print("Timed out waiting for page elements to load")
     except StaleElementReferenceException:
@@ -49,23 +77,21 @@ def get_html_data(filename, link, max_retries=10, desired_width=800, desired_hei
     except Exception as e:
         print(f"An error occurred: {str(e)}")
     finally:
-        
         driver.quit()
 
 def main():
-    with open("output_urls.txt", "r") as f:
+    with open("output_urls2.json", "r") as f:
         data = f.read() 
     data = eval(data)
     for state in tqdm(data, desc="Processing states"):
-        state_folder = "html/" + state.split("/")[-1]
+        state_folder = "images2/" + state.split("/")[-1]
         os.makedirs(state_folder, exist_ok=True)
         for store in tqdm(data[state], desc="Processing stores", leave=False):
             address = store
-            filename = state_folder + "/" + address + ".txt"
+            filename = state_folder + "/" + address + ".png"
             link = data[state][store]
-            get_html_data(filename, link)
-            time.sleep(3)
+            get_map_data(filename, link)
+            time.sleep(5)
             
 if __name__ == "__main__":
     main()
-

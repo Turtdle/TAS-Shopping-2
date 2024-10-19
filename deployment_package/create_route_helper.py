@@ -3,6 +3,7 @@ from PIL import Image, ImageChops, ImageDraw
 import requests
 import re
 import random
+from collections import deque
 from queue import PriorityQueue
 import math
 import numpy as np  
@@ -23,8 +24,6 @@ def trim_image(image):
     return image, bbox
 
 def add_label_markers(image, labels, background_size):
-    draw = ImageDraw.Draw(image)
-
     width, height = image.size
     top_left = None
     for y in range(height):
@@ -63,14 +62,8 @@ def add_label_markers(image, labels, background_size):
         
         dot_size = 3
         adjusted_labels.append((adjusted_x, adjusted_y, label[2], label[3]))
-        """
-        draw.ellipse([adjusted_x-dot_size, adjusted_y-dot_size, 
-                      adjusted_x+dot_size, adjusted_y+dot_size], 
-                     fill='red', outline='red')
 
-        draw.text((adjusted_x, adjusted_y), label[3], fill='black')
-        """
-    return image, adjusted_labels
+    return adjusted_labels
 
 def flood_fill(image, adjusted_labels):
     width, height = image.size
@@ -120,14 +113,8 @@ def flood_fill(image, adjusted_labels):
                         queues[i].append((nx, ny))
                         label_pixels[label_text].append((nx, ny))
 
-    draw = ImageDraw.Draw(image)
-    for x, y, text in label_positions:
-        bbox = draw.textbbox((x, y), text)
-        text_width = bbox[2] - bbox[0]
-        text_height = bbox[3] - bbox[1]
-        draw.text((x - text_width // 2, y - text_height // 2), text, fill=(0, 0, 0))
 
-    return image, label_pixels
+    return label_pixels
 
 def shopping_order(label_positions, grocery_list):
     entrances = [label for label in label_positions.keys() if 'entrance' in label.lower()]

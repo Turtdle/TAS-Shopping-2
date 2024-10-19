@@ -38,7 +38,7 @@ def get_map_data(filename, link, max_retries=10, desired_width=800, desired_heig
         WebDriverWait(driver, 10).until(
             EC.presence_of_element_located((By.CSS_SELECTOR, map_selector))
         )
-
+        time.sleep(5)
         html = driver.page_source
         with open(filename, "w") as f:
             f.write(html)
@@ -53,11 +53,11 @@ def get_map_data(filename, link, max_retries=10, desired_width=800, desired_heig
         driver.quit()
 
 def main():
-    with open("output_urls.txt", "r") as f:
+    with open("output_urls2.json", "r") as f:
         data = f.read() 
     data = eval(data)
     for state in tqdm(data, desc="Processing states"):
-        state_folder = "html/" + state.split("/")[-1]
+        state_folder = "html2/" + state.split("/")[-1]
         os.makedirs(state_folder, exist_ok=True)
         for store in tqdm(data[state], desc="Processing stores", leave=False):
             address = store

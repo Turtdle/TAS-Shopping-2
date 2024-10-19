@@ -37,7 +37,7 @@ def get_store_address(store_url):
 
 def main():
     output = {}
-    with open("output_urls.txt", "w+") as f:
+    with open("output_urls2.json", "w+") as f:
         state_urls = get_state_urls()
         for state_url in tqdm(state_urls, desc="Processing states"):
             store_urls = get_store_urls(state_url)

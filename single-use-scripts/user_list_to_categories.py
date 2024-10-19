@@ -4,7 +4,7 @@ import os
 import re
 import json
 def categorize(users_list, list_of_possible_categories):
-    genai.configure(api_key="AIzaSyAqU_M34G6tMTlTcNTCmznAX83xGnyBOG0")
+    genai.configure(api_key="")
     model = genai.GenerativeModel(model_name="gemini-1.5-flash",
     system_instruction="You must output a json. The list of items is a list of strings, and the categories are a list of strings. The function should return a dictionary where the keys are the categories and the values are lists of items that belong to that category. If an item does not belong to any of the categories, it should be ignored. If an item belongs to multiple categories, it should be included in all the relevant categories.")
     try:

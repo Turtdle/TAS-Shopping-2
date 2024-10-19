@@ -23,7 +23,6 @@ def trim_image(image):
     return image, bbox
 
 def add_label_markers(image, labels, background_size):
-    draw = ImageDraw.Draw(image)
 
     width, height = image.size
     top_left = None
@@ -61,15 +60,7 @@ def add_label_markers(image, labels, background_size):
         adjusted_x = (x - oldpoint1) * scale_factor_x + offset_x + 30
         adjusted_y = (y - oldpoint2) * scale_factor_y + offset_y + 25
         
-        dot_size = 3
         adjusted_labels.append((adjusted_x, adjusted_y, label[2], label[3]))
-        """
-        draw.ellipse([adjusted_x-dot_size, adjusted_y-dot_size, 
-                      adjusted_x+dot_size, adjusted_y+dot_size], 
-                     fill='red', outline='red')
-
-        draw.text((adjusted_x, adjusted_y), label[3], fill='black')
-        """
     return image, adjusted_labels
 
 def flood_fill(image, adjusted_labels):
