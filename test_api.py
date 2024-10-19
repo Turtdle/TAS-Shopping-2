@@ -10,10 +10,14 @@ shopping_list = [
     "toiletpaper",
     "socks",
 ]
-json_data = {"state": "michigan", "address": "10025 E Highland Rd, Howell, MI 48843-1879", "grocery_list":shopping_list}
+address = "1698 US Highway 98, Daphne, AL 36526-4252"
+state = "alabama"
+#get_categories #state, address -> labels
+#categorize_items #categories, grocery list -> grocery_dic
+#create_route #state, address, grocery_dic -> image
 
+base_url = "https://oj35b6kjt7.execute-api.us-west-2.amazonaws.com/default/"
 
-url = "https://oj35b6kjt7.execute-api.us-west-2.amazonaws.com/default/create_route"
 
 key = ""
 headers = {
@@ -21,7 +25,28 @@ headers = {
     "x-api-key": key
 }
 
-response = requests.post(url, json=json_data, headers=headers)
+data1 = {
+    "state": state,
+    "address": address
+}
+print(data1)
+response = requests.post(base_url + "get_categories", json=data1, headers=headers)
+print(f'response 1: {response.json()}')
+data2 = {
+    "categories": response.json()['labels'],
+    "grocery_list": shopping_list
+}
+print(data2)
+response = requests.post(base_url + "categorize_items", json=data2, headers=headers)
+print(f'response 2: {response.json()}')
+data3 = {
+    "state": state,
+    "address": address,
+    "grocery_dic": response.json()
+}
+
+print(f'data3: {data3}')
+response = requests.post(base_url + "create_route", json=data3, headers=headers, timeout=1000)
 if response.status_code == 200:
     print("Request successful!")
     response_data = response.json()
