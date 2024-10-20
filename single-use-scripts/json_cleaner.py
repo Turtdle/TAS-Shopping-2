@@ -13,7 +13,12 @@ with open("output_urls2.json", "r") as f:
 json2 = eval(data)
 
 #merge json data
-json1.update(json2)
+for item in json2:
+    if item in json1:
+        json1[item].update(json2[item])
+    else:
+        json1[item] = json2[item]
+print(json1)
 clean = {}
 for item in json1:
     clean[item.split("/")[-1]] = list(json1[item].keys())

@@ -13,7 +13,14 @@ This API allows you to create a route based on a given state, address, and groce
 ## Endpoint
 
 
-POST https://oj35b6kjt7.execute-api.us-west-2.amazonaws.com/default/create_route
+`POST https://oj35b6kjt7.execute-api.us-west-2.amazonaws.com/default/`
+
+valid functions are:
+
+- `create_route`
+- `get_categories`
+- `get_route`
+- `categorized_items`
 
 
 ## Authentication
@@ -31,14 +38,32 @@ Authentication is required for this API. Include your API key in the `x-api-key`
 
 The request body should be a JSON object with the following structure:
 
+get_categories
 ```json
 {
   "state": string,
   "address": string,
-  "grocery_list": array of strings
 }
 ```
 
+categorize_items
+```json
+{
+  "categories": array of strings,
+  "grocery_list": array of strings,
+}
+```
+
+get_route and create_route
+```json
+{
+  "state": string,
+  "address": string,
+  "grocery_dic": {
+    "label":  array of strings
+  }
+}
+```
 ### Fields
 
 | Field         | Type     | Description                                        |
@@ -54,6 +79,30 @@ The request body should be a JSON object with the following structure:
 - **Status Code:** 200 OK
 - **Content-Type:** application/json
 
+categorize_items
+```json
+{
+  {
+    "label":  array of strings
+  }
+}
+```
+
+get_categories
+```json
+{
+  "labels": array of strings
+}
+```
+
+get_route
+```json
+{
+  "route": array of strings
+}
+```
+
+create_route
 ```json
 {
   "image": string
@@ -88,7 +137,9 @@ x-api-key: vMEKwZ3DMH9CTzD0pmLcR5RQV95XeFoa2JjxyH89
 {
   "state": "california",
   "address": "16858 Golden Valley Pkwy, Lathrop, CA 95330-8535",
-  "grocery_list": ["bedding", "baby", "girls", "snacks", "seasonal", "pets"]
+  "grocery_dic": {
+    "dairy": ["milk", "yogurt"],
+  } 
 }
 ```
 

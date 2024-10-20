@@ -23,11 +23,31 @@ Authentication is required for this API. Include your API key in the `x-api-key`
 
 The request body should be a JSON object with the following structure:
 
+get_categories
 ```json
 {
   "state": string,
   "address": string,
-  "grocery_list": array of strings
+}
+```
+
+categorize_items
+```json
+{
+  "categories": array of strings,
+  "grocery_list": array of strings,
+}
+```
+
+get_route and create_route
+```json
+{
+  "state": string,
+  "address": string,
+  "grocery_dic": {
+    "category": array of strings,
+    "labels": array of strings
+  }
 }
 ```
 
